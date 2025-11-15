@@ -37,18 +37,18 @@ export default function Navbar({ onToggleMobileMenu, showMobileMenu = false }) {
           }}
           className={
             (isDark
-              ? "border-slate-800 text-slate-300"
-              : "border-slate-200 text-slate-700") +
-            " md:hidden rounded-md border p-2 transition-colors"
+              ? " text-slate-300"
+              : " text-slate-700") +
+            " md:hidden transition-colors"
           }
           aria-label="Toggle menu"
         >
           {showMobileMenu ? (
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           ) : (
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           )}
