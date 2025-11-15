@@ -59,7 +59,7 @@ export default function Navbar({ onToggleMobileMenu, showMobileMenu = false }) {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              router.push("/");
+              window.location.href = window.location.pathname.replace(/\/$/, '') || '/';
             }}
             className={
               " flex h-9 w-9 items-center justify-center hover:opacity-90 transition overflow-visible"
@@ -77,7 +77,7 @@ export default function Navbar({ onToggleMobileMenu, showMobileMenu = false }) {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              router.push("/");
+              window.location.href = window.location.pathname.replace(/\/$/, '') || '/';
             }}
             className={isRTL ? "text-right" : "text-left"}
           >

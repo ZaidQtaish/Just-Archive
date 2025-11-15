@@ -375,7 +375,7 @@ export default function HomePage() {
                   onClick={() => {
                     setSelectedMajorCode(null);
                     setShowMobileMenu(false);
-                    window.location.hash = '';
+                    if (window.location.hash) window.location.href = window.location.pathname;
                   }}
                   className={
                     "flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition " +
@@ -409,12 +409,12 @@ export default function HomePage() {
                     <ul>
                       {faculty.majors.map((major) => (
                         <li key={major.id}>
-                          <button
-                            onClick={() => {
-                              setSelectedMajorCode(major.code);
-                              setShowMobileMenu(false);
-                              window.location.hash = '';
-                            }}
+                        <button
+                          onClick={() => {
+                            setSelectedMajorCode(major.code);
+                            setShowMobileMenu(false);
+                            if (window.location.hash) window.location.href = window.location.pathname;
+                          }}
                             className={
                               "flex w-full items-center justify-between px-4 py-2 " + (isRTL ? "text-right" : "text-left") + " text-sm transition " +
                               (isDark

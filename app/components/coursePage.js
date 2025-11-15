@@ -3,93 +3,127 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useApp } from "../context/AppContext";
+import { useTranslation } from "react-i18next";
 
 // Course data - in production, this would come from your Strapi backend
 const ALL_COURSES = {
   "CPE101": {
     code: "CPE 101",
-    name: "Introduction to Programming",
-    major: "Computer Engineering",
+    nameEn: "Introduction to Programming",
+    nameAr: "مقدمة في البرمجة",
+    majorEn: "Computer Engineering",
+    majorAr: "هندسة الحاسوب",
   },
   "CPE241": {
     code: "CPE 241",
-    name: "Data Structures",
-    major: "Computer Engineering",
+    nameEn: "Data Structures",
+    nameAr: "هياكل البيانات",
+    majorEn: "Computer Engineering",
+    majorAr: "هندسة الحاسوب",
   },
   "CPE351": {
     code: "CPE 351",
-    name: "Computer Networks",
-    major: "Computer Engineering",
+    nameEn: "Computer Networks",
+    nameAr: "شبكات الحاسوب",
+    majorEn: "Computer Engineering",
+    majorAr: "هندسة الحاسوب",
   },
   "EE241": {
     code: "EE 241",
-    name: "Signals & Systems",
-    major: "Electrical Engineering",
+    nameEn: "Signals & Systems",
+    nameAr: "الإشارات والأنظمة",
+    majorEn: "Electrical Engineering",
+    majorAr: "الهندسة الكهربائية",
   },
   "EE231": {
     code: "EE 231",
-    name: "Electronics I",
-    major: "Electrical Engineering",
+    nameEn: "Electronics I",
+    nameAr: "الإلكترونيات 1",
+    majorEn: "Electrical Engineering",
+    majorAr: "الهندسة الكهربائية",
   },
   "EE332": {
     code: "EE 332",
-    name: "Power Systems",
-    major: "Electrical Engineering",
+    nameEn: "Power Systems",
+    nameAr: "أنظمة القدرة",
+    majorEn: "Electrical Engineering",
+    majorAr: "الهندسة الكهربائية",
   },
   "ME210": {
     code: "ME 210",
-    name: "Thermodynamics",
-    major: "Mechanical Engineering",
+    nameEn: "Thermodynamics",
+    nameAr: "الثرموديناميك",
+    majorEn: "Mechanical Engineering",
+    majorAr: "الهندسة الميكانيكية",
   },
   "ME315": {
     code: "ME 315",
-    name: "Machine Design",
-    major: "Mechanical Engineering",
+    nameEn: "Machine Design",
+    nameAr: "تصميم الآلات",
+    majorEn: "Mechanical Engineering",
+    majorAr: "الهندسة الميكانيكية",
   },
   "CE210": {
     code: "CE 210",
-    name: "Statics",
-    major: "Civil Engineering",
+    nameEn: "Statics",
+    nameAr: "الستاتيك",
+    majorEn: "Civil Engineering",
+    majorAr: "الهندسة المدنية",
   },
   "CE340": {
     code: "CE 340",
-    name: "Concrete Design",
-    major: "Civil Engineering",
+    nameEn: "Concrete Design",
+    nameAr: "تصميم الخرسانة",
+    majorEn: "Civil Engineering",
+    majorAr: "الهندسة المدنية",
   },
   "MED212": {
     code: "MED 212",
-    name: "Anatomy",
-    major: "Medicine",
+    nameEn: "Anatomy",
+    nameAr: "التشريح",
+    majorEn: "Medicine",
+    majorAr: "الطب",
   },
   "MED231": {
     code: "MED 231",
-    name: "Physiology",
-    major: "Medicine",
+    nameEn: "Physiology",
+    nameAr: "علم وظائف الأعضاء",
+    majorEn: "Medicine",
+    majorAr: "الطب",
   },
   "MED245": {
     code: "MED 245",
-    name: "Pathology",
-    major: "Medicine",
+    nameEn: "Pathology",
+    nameAr: "الباثولوجيا",
+    majorEn: "Medicine",
+    majorAr: "الطب",
   },
   "PHAR210": {
     code: "PHAR 210",
-    name: "Pharmacology I",
-    major: "Pharmacy",
+    nameEn: "Pharmacology I",
+    nameAr: "علم الأدوية 1",
+    majorEn: "Pharmacy",
+    majorAr: "الصيدلة",
   },
   "PHAR220": {
     code: "PHAR 220",
-    name: "Pharmaceutics",
-    major: "Pharmacy",
+    nameEn: "Pharmaceutics",
+    nameAr: "الصيدلانيات",
+    majorEn: "Pharmacy",
+    majorAr: "الصيدلة",
   },
   "NURS110": {
     code: "NURS 110",
-    name: "Fundamentals of Nursing",
-    major: "Nursing",
+    nameEn: "Fundamentals of Nursing",
+    nameAr: "أساسيات التمريض",
+    majorEn: "Nursing",
+    majorAr: "التمريض",
   },
 };
 
 export default function CourseResourcePage() {
-  const { isDark } = useApp();
+  const { isDark, lang, isRTL } = useApp();
+  const { t } = useTranslation();
   
   // Get course code from URL hash
   const [courseCode, setCourseCode] = useState("");
@@ -115,8 +149,10 @@ export default function CourseResourcePage() {
   const course = useMemo(() => {
     return ALL_COURSES[courseCode] || {
       code: courseCode,
-      name: "Course Not Found",
-      major: "Unknown",
+      nameEn: "Course Not Found",
+      nameAr: "المساق غير موجود",
+      majorEn: "Unknown",
+      majorAr: "غير معروف",
     };
   }, [courseCode]);
 
@@ -332,22 +368,22 @@ export default function CourseResourcePage() {
         }>
           <div className="flex-1 w-full sm:w-auto">
             <button
-              onClick={() => window.location.hash = ''}
+              onClick={() => window.location.href = window.location.pathname}
               className={
                 (isDark ? "text-[#7DB4E5] hover:text-[#9CC5E9]" : "text-[#145C9E] hover:text-[#1f3d78]") +
                 " text-[11px] sm:text-xs hover:underline mb-2 flex items-center gap-1 transition-all"
               }
             >
-              <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className={"w-3 h-3 sm:w-3.5 sm:h-3.5" + (isRTL ? " rotate-180" : "")} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to courses
+              {t('backToCourses')}
             </button>
             <p className={(isDark ? "text-slate-500" : "text-slate-400") + " text-[10px] sm:text-xs uppercase tracking-wide"}>
-              {course.major}
+              {lang === "en" ? course.majorEn : course.majorAr}
             </p>
             <h1 className={(isDark ? "text-slate-100" : "text-slate-800") + " mt-1 text-lg sm:text-xl font-semibold"}>
-              {course.name}
+              {lang === "en" ? course.nameEn : course.nameAr}
             </h1>
             <p className={(isDark ? "text-slate-400" : "text-slate-500") + " mt-0.5 sm:mt-1 text-xs sm:text-sm"}>{course.code}</p>
             {!courseExists && (
@@ -355,7 +391,7 @@ export default function CourseResourcePage() {
                 (isDark ? "text-amber-400 bg-amber-900/20" : "text-amber-600 bg-amber-50") +
                 " mt-2 text-[11px] sm:text-xs px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-md inline-block"
               }>
-                This course doesn&apos;t exist in our database yet. Resources will be added soon.
+                {t('courseDoesntExist')}
               </p>
             )}
           </div>
@@ -364,7 +400,7 @@ export default function CourseResourcePage() {
               (isDark ? "bg-[#7DB4E5] text-slate-950 hover:bg-[#9CC5E9]" : "bg-[#145C9E] text-white hover:bg-[#1f3d78]") +
               " rounded-md px-4 py-2 text-xs font-medium transition"
             }>
-              Upload Resources
+              {t('uploadResources')}
             </button>
           </div>
         </section>
@@ -394,7 +430,7 @@ export default function CourseResourcePage() {
                       : "text-slate-500"
                   }`}
                 >
-                  Syllabus
+                  {t('syllabus')}
                 </button>
                 <button
                   onClick={() => {
@@ -411,7 +447,7 @@ export default function CourseResourcePage() {
                       : "text-slate-500"
                   }`}
                 >
-                  PYQs
+                  {t('pyqs')}
                 </button>
                 <button
                   onClick={() => {
@@ -428,7 +464,7 @@ export default function CourseResourcePage() {
                       : "text-slate-500"
                   }`}
                 >
-                  Notes
+                  {t('notes')}
                 </button>
 
                 <button
@@ -446,7 +482,7 @@ export default function CourseResourcePage() {
                       : "text-slate-500"
                   }`}
                 >
-                  YouTube Playlists
+                  {t('youtubePlaylists')}
                 </button>
               </div>
             </div>
@@ -457,7 +493,7 @@ export default function CourseResourcePage() {
             <div className={(isDark ? "bg-slate-900/40 border-slate-800" : "bg-white border-slate-200") + " rounded-lg border px-4 py-3"}>
               <div className="flex items-center gap-3 flex-wrap">
                 <span className={(isDark ? "text-slate-400" : "text-slate-600") + " text-xs font-medium"}>
-                  Filter by exam:
+                  {t('filterByExam')}
                 </span>
                 <div className="flex gap-2 flex-wrap">
                 <button
@@ -472,7 +508,7 @@ export default function CourseResourcePage() {
                       : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                   }`}
                 >
-                  All
+                  {t('all')}
                 </button>
                 <button
                   onClick={() => setExamFilter("first")}
@@ -486,7 +522,7 @@ export default function CourseResourcePage() {
                       : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                   }`}
                 >
-                  First Exam
+                  {t('firstExam')}
                 </button>
                 <button
                   onClick={() => setExamFilter("second")}
@@ -500,7 +536,7 @@ export default function CourseResourcePage() {
                       : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                   }`}
                 >
-                  Second Exam
+                  {t('secondExam')}
                 </button>
                 <button
                   onClick={() => setExamFilter("midterm")}
@@ -514,7 +550,7 @@ export default function CourseResourcePage() {
                       : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                   }`}
                 >
-                  Midterm
+                  {t('midterm')}
                 </button>
                 <button
                   onClick={() => setExamFilter("final")}
@@ -528,7 +564,7 @@ export default function CourseResourcePage() {
                       : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                   }`}
                 >
-                  Final Exam
+                  {t('finalExam')}
                 </button>
               </div>
             </div>
@@ -544,23 +580,23 @@ export default function CourseResourcePage() {
           <div className="flex justify-center">
             <div className={(isDark ? "bg-slate-900/40 border-slate-800" : "bg-white border-slate-200") + " rounded-lg border p-6 w-full max-w-4xl"}>
               <h3 className={(isDark ? "text-slate-200" : "text-slate-700") + " text-lg font-semibold mb-4"}>
-                Course Syllabus
+                {t('courseSyllabus')}
               </h3>
               <div className={(isDark ? "bg-slate-800/50 border-slate-700" : "bg-slate-50 border-slate-200") + " rounded-md border border-dashed aspect-[8.5/11] flex items-center justify-center text-sm text-slate-400"}>
-                PDF Syllabus Preview
+                {t('pdfSyllabusPreview')}
               </div>
               <div className="flex gap-2 mt-4">
                 <button className={
                   (isDark ? "bg-[#7DB4E5] text-slate-950 hover:bg-[#9CC5E9]" : "bg-[#145C9E] text-white hover:bg-[#1f3d78]") +
                   " rounded-md px-4 py-2 text-sm transition"
                 }>
-                  Download Syllabus
+                  {t('downloadSyllabus')}
                 </button>
                 <button className={
                   (isDark ? "border-slate-700 text-slate-300 hover:bg-slate-800/50" : "border-slate-200 text-slate-700 hover:bg-slate-50") +
                   " rounded-md border px-4 py-2 text-sm transition"
                 }>
-                  Open in new tab
+                  {t('openInNewTab')}
                 </button>
               </div>
             </div>
@@ -579,22 +615,22 @@ export default function CourseResourcePage() {
                 }
               >
                 <div className={(isDark ? "bg-slate-800" : "bg-slate-200") + " aspect-video mb-3 rounded-md flex items-center justify-center text-[10px] text-slate-500"}>
-                  YouTube thumbnail
+                  {t('youtubeThumbnail')}
                 </div>
                 <h3 className={(isDark ? "text-slate-100" : "text-slate-800") + " text-sm font-semibold"}>
                   {pl.title}
                 </h3>
                 <p className={(isDark ? "text-slate-500" : "text-slate-400") + " text-xs mt-1"}>
-                  {pl.channel} · {pl.videos} videos · {pl.duration}
+                  {pl.channel} · {pl.videos} {t('videos')} · {pl.duration}
                 </p>
                 <button className={(isDark ? "bg-slate-800 hover:bg-slate-700" : "bg-slate-900 hover:bg-slate-800") + " mt-3 w-full rounded-md px-3 py-1.5 text-xs text-white transition"}>
-                  Open playlist
+                  {t('openPlaylist')}
                 </button>
               </div>
             ))}
             {youtubePlaylists.length === 0 && (
               <p className={(isDark ? "text-slate-500" : "text-slate-400") + " text-sm"}>
-                No suggested playlists yet.
+                {t('noSuggestedPlaylists')}
               </p>
             )}
           </div>
@@ -609,13 +645,13 @@ export default function CourseResourcePage() {
                     ? filteredPyqSections.reduce(
                         (sum, sec) => sum + sec.items.length,
                         0
-                      ) + " resources"
-                    : flatCurrentResources.length + " resources"}
+                      ) + " " + t('resources')
+                    : flatCurrentResources.length + " " + t('resources')}
                 </p>
                 <p className={(isDark ? "text-slate-500" : "text-slate-400") + " text-[10px]"}>
                   {activeTab === "pyq"
-                    ? "Grouped by exam term"
-                    : "Sorted by last updated"}
+                    ? t('groupedByExamTerm')
+                    : t('sortedByLastUpdated')}
                 </p>
               </div>
 
@@ -647,7 +683,7 @@ export default function CourseResourcePage() {
                               <button
                                 type="button"
                                 onClick={() => setSelectedResourceId(res.id)}
-                                className="flex flex-1 items-center gap-3 min-w-0 text-left"
+                                className={(isRTL ? "text-right" : "text-left") + " flex flex-1 items-center gap-3 min-w-0"}
                               >
                                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-red-100 text-red-600 text-[10px] font-semibold">
                                   PDF
@@ -681,7 +717,7 @@ export default function CourseResourcePage() {
                                     ? "border border-slate-600 hover:border-slate-500"
                                     : "border border-slate-300 hover:border-slate-400"
                                 }`}
-                                title={isCompleted ? "Mark as incomplete" : "Mark as complete"}
+                                title={isCompleted ? t('markAsIncomplete') : t('markAsComplete')}
                               >
                                 {isCompleted && (
                                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -697,7 +733,7 @@ export default function CourseResourcePage() {
                   ) : (
                     <li className="px-4 py-8 text-center">
                       <p className={(isDark ? "text-slate-400" : "text-slate-500") + " text-sm"}>
-                        No resources found for this exam type.
+                        {t('noResourcesFound')}
                       </p>
                     </li>
                   )}
@@ -724,7 +760,7 @@ export default function CourseResourcePage() {
                           <button
                             type="button"
                             onClick={() => setSelectedResourceId(res.id)}
-                            className="flex flex-1 items-center gap-3 min-w-0 text-left"
+                            className={(isRTL ? "text-right" : "text-left") + " flex flex-1 items-center gap-3 min-w-0"}
                           >
                             <div
                               className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-[10px] font-semibold ${
@@ -766,7 +802,7 @@ export default function CourseResourcePage() {
                                 ? "border border-slate-600 hover:border-slate-500"
                                 : "border border-slate-300 hover:border-slate-400"
                             }`}
-                            title={isCompleted ? "Mark as incomplete" : "Mark as complete"}
+                            title={isCompleted ? t('markAsIncomplete') : t('markAsComplete')}
                           >
                             {isCompleted && (
                               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -786,7 +822,7 @@ export default function CourseResourcePage() {
             <aside className="space-y-4">
               <div className={(isDark ? "bg-slate-900/40 border-slate-800" : "bg-white border-slate-200") + " rounded-lg border p-4 min-h-[220px]"}>
                 <h3 className={(isDark ? "text-slate-200" : "text-slate-700") + " text-sm font-semibold"}>
-                  Preview
+                  {t('preview')}
                 </h3>
                 {selectedResource ? (
                   <div className="mt-3 space-y-3">
@@ -812,26 +848,26 @@ export default function CourseResourcePage() {
                       </div>
                     </div>
                     <div className={(isDark ? "bg-slate-800/50 border-slate-700" : "bg-slate-50 border-slate-200") + " rounded-md border border-dashed h-28 flex items-center justify-center text-xs text-slate-400"}>
-                      PDF preview placeholder
+                      {t('pdfPreviewPlaceholder')}
                     </div>
                     <div className="flex gap-2">
                       <button className={
                         (isDark ? "bg-[#7DB4E5] text-slate-950 hover:bg-[#9CC5E9]" : "bg-[#145C9E] text-white hover:bg-[#1f3d78]") +
                         " rounded-md px-3 py-1.5 text-xs transition"
                       }>
-                        Download
+                        {t('download')}
                       </button>
                       <button className={
                         (isDark ? "border-slate-700 text-slate-300 hover:bg-slate-800/50" : "border-slate-200 text-slate-700 hover:bg-slate-50") +
                         " rounded-md border px-3 py-1.5 text-xs transition"
                       }>
-                        Open in new tab
+                        {t('openInNewTab')}
                       </button>
                     </div>
                   </div>
                 ) : (
                   <p className={(isDark ? "text-slate-500" : "text-slate-400") + " mt-3 text-xs"}>
-                    Select a resource from the list to preview it.
+                    {t('selectResourceToPreview')}
                   </p>
                 )}
               </div>
@@ -844,19 +880,19 @@ export default function CourseResourcePage() {
             <div className="max-w-md mx-auto">
               <div className="text-5xl mb-4">📚</div>
               <h2 className={(isDark ? "text-slate-100" : "text-slate-800") + " text-lg font-semibold mb-2"}>
-                No Resources Available
+                {t('noResourcesAvailable')}
               </h2>
               <p className={(isDark ? "text-slate-400" : "text-slate-500") + " text-sm mb-4"}>
-                This course hasn&apos;t been added to our database yet. Check back soon or help us by uploading resources!
+                {t('courseNotInDatabase')}
               </p>
               <button
-                onClick={() => window.location.hash = ''}
+                onClick={() => window.location.href = window.location.pathname}
                 className={
                   (isDark ? "bg-[#7DB4E5] text-slate-950 hover:bg-[#9CC5E9]" : "bg-[#145C9E] text-white hover:bg-[#1f3d78]") +
                   " rounded-md px-4 py-2 text-sm font-medium transition"
                 }
               >
-                Browse All Courses
+                {t('browseAllCourses')}
               </button>
             </div>
           </div>

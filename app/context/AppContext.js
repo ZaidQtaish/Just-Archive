@@ -9,22 +9,29 @@ const AppContext = createContext();
 export function AppProvider({ children }) {
   const { i18n } = useTranslation();
   
-  // Always start with "light" to match server-side rendering
+  // Always start with defaults for SSR
   const [lang, setLang] = useState("en");
   const [theme, setTheme] = useState("light");
   const [mounted, setMounted] = useState(false);
 
-  // Load from localStorage immediately after mount
+  // Load from localStorage after mount to avoid hydration mismatch
   useEffect(() => {
-    setMounted(true);
-    const savedLang = localStorage.getItem("lang");
-    const savedTheme = localStorage.getItem("theme");
+    const savedLang = localStorage.getItem("lang") || "en";
+    const savedTheme = localStorage.getItem("theme") || "light";
     
-    if (savedLang) {
-      setLang(savedLang);
-      i18n.changeLanguage(savedLang);
+    setLang(savedLang);
+    setTheme(savedTheme);
+    i18n.changeLanguage(savedLang);
+    document.documentElement.setAttribute('lang', savedLang);
+    
+    // Apply theme to document
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
-    if (savedTheme) setTheme(savedTheme);
+    
+    setMounted(true);
   }, [i18n]);
 
   // Save preferences to localStorage when they change
@@ -56,7 +63,13 @@ export function AppProvider({ children }) {
     setTheme,
     isRTL: lang === "ar",
     isDark: theme === "dark",
+    mounted,
   };
+
+  // Show nothing until mounted to prevent hydration mismatch
+  if (!mounted) {
+    return null;
+  }
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
