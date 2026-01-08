@@ -3,10 +3,10 @@ import { getDb, getFilesByCourse } from '@/lib/db';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { courseId: string } }
+  { params }: { params: Promise<{ courseId: string }> }
 ) {
   try {
-    const { courseId } = params;
+    const { courseId } = await params;
 
     // Get D1 database
     const db = getDb((req as any).env?.DB);
@@ -20,8 +20,8 @@ export async function GET(
     const filesWithTags = filesList.map(file => ({
       ...file,
       tags: file.tags ? JSON.parse(file.tags as string) : [],
-      date: new Date(file.date * 1000), // Convert Unix timestamp to Date
-      uploadedAt: new Date(file.uploadedAt * 1000),
+      date: new Date(Number(file.date) * 1000), // Convert Unix timestamp to Date
+      uploadedAt: new Date(Number(file.uploadedAt) * 1000),
     }));
 
     return NextResponse.json({ files: filesWithTags });

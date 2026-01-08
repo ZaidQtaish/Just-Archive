@@ -1,9 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb, createFile } from '@/lib/db';
+import type { FileType } from '@/types';
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body = await req.json() as {
+      fileId: string;
+      courseId: string;
+      fileName: string;
+      fileType: FileType;
+      r2Key: string;
+      fileSizeBytes: number;
+      mimeType: string;
+      semester?: string;
+      year?: number;
+      doctorName?: string;
+      tags?: string;
+      notes?: string;
+    };
     const { 
       fileId, 
       courseId, 
@@ -44,7 +58,6 @@ export async function POST(req: NextRequest) {
       year,
       doctorName,
       uploadedBy: userEmail,
-      uploadedAt: new Date(),
       isVerified: false,
       downloadCount: 0,
       tags: tags ? JSON.parse(tags) : undefined,

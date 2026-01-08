@@ -10,7 +10,7 @@ export function getDb(d1Database: D1Database) {
 
 
 // Insert a new file record
-export async function createFile(db: ReturnType<typeof getDb>, file: Omit<File, 'createdAt' | 'updatedAt'>) {
+export async function createFile(db: ReturnType<typeof getDb>, file: Omit<File, 'uploadedAt'>) {
   return await db.insert(files).values({
     id: file.id,
     courseId: file.courseId,
@@ -19,16 +19,15 @@ export async function createFile(db: ReturnType<typeof getDb>, file: Omit<File, 
     fileUrl: file.fileUrl,
     fileSizeBytes: file.fileSizeBytes,
     mimeType: file.mimeType,
-    date: Math.floor(file.date.getTime() / 1000), // Convert to Unix timestamp
-    semester: file.semester,
-    year: file.year,
-    doctorName: file.doctorName,
+    date: file.date, // Drizzle handles timestamp conversion
+    semester: file.semester || null,
+    year: file.year || null,
+    doctorName: file.doctorName || null,
     uploadedBy: file.uploadedBy,
-    uploadedAt: Math.floor((file.uploadedAt || new Date()).getTime() / 1000),
-    isVerified: file.isVerified ? 1 : 0,
+    isVerified: file.isVerified,
     downloadCount: file.downloadCount || 0,
     tags: file.tags ? JSON.stringify(file.tags) : null,
-    notes: file.notes,
+    notes: file.notes || null,
   }).returning();
 }
 

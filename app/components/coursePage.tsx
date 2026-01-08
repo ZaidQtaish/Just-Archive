@@ -6,9 +6,15 @@ import { useRouter } from "next/navigation";
 import { useApp } from "../context/AppContext";
 import { useTranslation } from "react-i18next";
 import ReviewSystem from "./ReviewSystem";
-import { Course, CompletedFiles, ResourceSection, FavoriteCourse } from "@/types";
+import { CompletedFiles, ResourceSection, FavoriteCourse } from "@/types";
 interface AllCourses {
-  [key: string]: Course;
+  [key: string]: {
+    code: string;
+    nameEn: string;
+    nameAr: string;
+    majorEn: string;
+    majorAr: string;
+  };
 }
 
 const ALL_COURSES: AllCourses = {

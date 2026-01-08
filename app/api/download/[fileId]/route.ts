@@ -4,10 +4,10 @@ import { getDownloadUrl } from '@/lib/r2';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { fileId: string } }
+  { params }: { params: Promise<{ fileId: string }> }
 ) {
   try {
-    const { fileId } = params;
+    const { fileId } = await params;
 
     // Get D1 database
     const db = getDb((req as any).env?.DB);

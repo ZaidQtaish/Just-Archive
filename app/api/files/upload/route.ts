@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { getUploadUrl } from '@/lib/r2';
 import { getDb, createFile } from '@/lib/db';
+import type { FileType } from '@/types';
 
 // Check if user is admin
 function isAdmin(email?: string): boolean {
@@ -19,7 +20,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
-    const body = await req.json();
+    const body = await req.json() as {
+      courseId: string;
+      fileName: string;
+      fileType: FileType;
+      contentType: string;
+      semester?: string;
+      year?: number;
+      doctorName?: string;
+      tags?: string;
+      notes?: string;
+    };
     const { courseId, fileName, fileType, contentType, semester, year, doctorName, tags, notes } = body;
 
     // Validate required fields
