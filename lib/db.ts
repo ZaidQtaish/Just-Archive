@@ -1,34 +1,10 @@
 import { drizzle } from 'drizzle-orm/d1';
-import { eq, and, desc } from 'drizzle-orm';
-import { files, courses, courseMajors } from '@/db/schema';
-import type { File, Course } from '@/types';
+import { eq, desc } from 'drizzle-orm';
+import { files, courses } from '@/db/schema';
 
 // This will be initialized with D1 database in API routes
 export function getDb(d1Database: D1Database) {
   return drizzle(d1Database);
-}
-
-
-// Insert a new file record
-export async function createFile(db: ReturnType<typeof getDb>, file: Omit<File, 'uploadedAt'>) {
-  return await db.insert(files).values({
-    id: file.id,
-    courseId: file.courseId,
-    fileName: file.fileName,
-    fileType: file.fileType,
-    fileUrl: file.fileUrl,
-    fileSizeBytes: file.fileSizeBytes,
-    mimeType: file.mimeType,
-    date: file.date, // Drizzle handles timestamp conversion
-    semester: file.semester || null,
-    year: file.year || null,
-    doctorName: file.doctorName || null,
-    uploadedBy: file.uploadedBy,
-    isVerified: file.isVerified,
-    downloadCount: file.downloadCount || 0,
-    tags: file.tags ? JSON.stringify(file.tags) : null,
-    notes: file.notes || null,
-  }).returning();
 }
 
 // Get all files for a course
@@ -42,11 +18,6 @@ export async function getFileById(db: ReturnType<typeof getDb>, fileId: string) 
   return result[0];
 }
 
-// Delete a file record
-export async function deleteFile(db: ReturnType<typeof getDb>, fileId: string) {
-  return await db.delete(files).where(eq(files.id, fileId));
-}
-
 // Increment download count
 export async function incrementDownloadCount(db: ReturnType<typeof getDb>, fileId: string) {
   const file = await getFileById(db, fileId);
@@ -57,7 +28,7 @@ export async function incrementDownloadCount(db: ReturnType<typeof getDb>, fileI
   }
 }
 
-// Get or create a course
+// Get a course by ID
 export async function getCourseById(db: ReturnType<typeof getDb>, courseId: string) {
   const result = await db.select().from(courses).where(eq(courses.id, courseId)).limit(1);
   return result[0];
